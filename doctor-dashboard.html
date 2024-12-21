@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Profile</title>
+  <style>
+    /* Same styles as before for consistency */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .profile-info {
+      margin-bottom: 30px;
+    }
+    .profile-info label {
+      display: block;
+      font-weight: bold;
+      margin: 10px 0 5px;
+    }
+    .profile-info input, .profile-info textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    .profile-actions {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Doctor Account Setup</h1>
+
+    <!-- Doctor Profile Information Section -->
+    <div class="profile-info">
+      <label for="doctor-name">Doctor's Name:</label>
+      <input type="text" id="doctor-name" placeholder="Enter doctor's name">
+      
+      <label for="doctor-specialty">Specialty:</label>
+      <input type="text" id="doctor-specialty" placeholder="Enter specialty">
+
+      <label for="doctor-experience">Experience (in years):</label>
+      <input type="number" id="doctor-experience" placeholder="Enter years of experience">
+      
+      <label for="doctor-location">Location:</label>
+      <input type="text" id="doctor-location" placeholder="Enter location">
+
+      <label for="doctor-bio">Short Bio:</label>
+      <textarea id="doctor-bio" placeholder="Write a short bio..." rows="4"></textarea>
+
+      <label for="doctor-profile-picture">Profile Picture (URL):</label>
+      <input type="url" id="doctor-profile-picture" placeholder="Enter profile picture URL">
+    </div>
+
+    <div class="profile-actions">
+      <button class="btn" id="save-doctor-profile">Save Profile</button>
+    </div>
+  </div>
+
+  <script>
+    // Simulate saving the doctor's profile
+    document.getElementById('save-doctor-profile').addEventListener('click', () => {
+      const name = document.getElementById('doctor-name').value;
+      const specialty = document.getElementById('doctor-specialty').value;
+      const experience = document.getElementById('doctor-experience').value;
+      const location = document.getElementById('doctor-location').value;
+      const bio = document.getElementById('doctor-bio').value;
+      const profilePicture = document.getElementById('doctor-profile-picture').value;
+
+      // Simulating a check for all fields to be filled
+      if(name && specialty && experience && location && bio && profilePicture) {
+        alert('Doctor profile saved successfully!');
+        // Clear the fields (optional)
+        document.getElementById('doctor-name').value = '';
+        document.getElementById('doctor-specialty').value = '';
+        document.getElementById('doctor-experience').value = '';
+        document.getElementById('doctor-location').value = '';
+        document.getElementById('doctor-bio').value = '';
+        document.getElementById('doctor-profile-picture').value = '';
+      } else {
+        alert('Please fill in all the fields.');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #007BFF;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .sidebar img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      border: 3px solid white;
+      cursor: pointer;
+    }
+
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .sidebar p {
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar .menu {
+      list-style: none;
+      padding: 0;
+      width: 100%;
+    }
+
+    .sidebar .menu li {
+      margin: 15px 0;
+    }
+
+    .sidebar .menu li a {
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+      display: block;
+      text-align: center;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .sidebar .menu li a:hover {
+      background-color: #0056b3;
+    }
+
+    .completion-circle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: conic-gradient(#28a745 75%, #e9ecef 75%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .content h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .section h2 {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .section p {
+      font-size: 16px;
+      margin: 5px 0;
+    }
+
+    .logout {
+      margin-top: auto;
+      cursor: pointer;
+      padding: 10px 20px;
+      background-color: #dc3545;
+      color: white;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    .logout:hover {
+      background-color: #b02a37;
+    }
+
+    .chat-box {
+      position: fixed;
+      bottom: 0;
+      right: 20px;
+      width: 300px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-box .chat-header {
+      background: #007BFF;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .chat-box .chat-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background: #f9f9f9;
+    }
+
+    .chat-box .chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    .chat-box .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+    }
+
+    .chat-box .chat-input button {
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .chat-box .chat-input button:hover {
+      background: #0056b3;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .arrow {
+      cursor: pointer;
+      font-size: 18px;
+      margin-left: 10px;
+    }
+
+    .arrow-up {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <label for="profile-pic-upload">
+      <img src="https://via.placeholder.com/100" alt="Profile Picture" id="profile-pic">
+    </label>
+    <input type="file" id="profile-pic-upload" style="display: none;">
+    <h2 id="user-name">John Doe</h2>
+    <p id="user-email">johndoe@example.com</p>
+    <div class="completion-circle" id="completion-circle">75%</div>
+    <ul class="menu">
+      <li><a href="#dashboard">Dashboard</a></li>
+      <li><a href="#appointments">Appointments</a></li>
+      <li><a href="#payments">Payments</a></li>
+      <li><a href="#messages">Messages</a></li>
+      <li><a href="#settings">Settings</a></li>
+    </ul>
+    <div class="logout" id="logout-btn">Logout</div>
+  </div>
+
+  <div class="content">
+    <h1>Welcome to Your Dashboard!</h1>
+
+    <div class="section" id="dashboard">
+      <h2>Profile Overview <span class="arrow arrow-up" id="arrow-dashboard">▼</span></h2>
+      <div class="hidden" id="dashboard-content">
+        <p><strong>Name:</strong> <span id="profile-name">John Doe</span></p>
+        <p><strong>Email:</strong> <span id="profile-email">johndoe@example.com</span></p>
+        <p><strong>Phone:</strong> <input type="text" id="profile-phone" value="+1234567890"></p>
+        <p><strong>Address:</strong> <input type="text" id="profile-address" placeholder="Enter your address" value=""></p>
+        <p><strong>Google Location:</strong> <input type="text" id="profile-location" placeholder="Enter your location URL" value=""></p>
+        <p><strong>Profile Picture:</strong> <input type="file" id="upload-profile-pic"></p>
+        <div id="doctor-specific" style="display: none;">
+          <p><strong>Upload Documents:</strong> <input type="file" id="doctor-documents"></p>
+          <p id="verification-status">Verification Pending</p>
+        </div>
+        <button id="save-profile">Save Profile</button>
+      </div>
+    </div>
+
+    <div class="section" id="appointments">
+      <h2>Your Appointments <span class="arrow arrow-up" id="arrow-appointments">▼</span></h2>
+      <div class="hidden" id="appointments-content">
+        <p>No appointments yet. Schedule one now!</p>
+      </div>
+    </div>
+
+    <div class="section" id="payments">
+      <h2>Payment History <span class="arrow arrow-up" id="arrow-payments">▼</span></h2>
+      <div class="hidden" id="payments-content">
+        <p>No transactions available.</p>
+      </div>
+    </div>
+
+    <div class="section" id="messages">
+      <h2>Messages <span class="arrow arrow-up" id="arrow-messages">▼</span></h2>
+      <div class="hidden" id="messages-content">
+        <p>No messages. Start a conversation!</p>
+      </div>
+    </div>
+  </div>
+
+ <div class="chat-box">
+    <div class="chat-header">Chat with Support</div>
+    <div class="chat-messages" id="chat-messages">
+      <p>No messages yet.</p>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chat-input" placeholder="Type a message...">
+      <button id="send-message">Send</button>
+    </div>
+  </div>
+
+  <script>
+    // Functionality for toggling the sections
+    document.querySelectorAll('.arrow').forEach(arrow => {
+      arrow.addEventListener('click', function() {
+        const contentId = arrow.id.replace('arrow-', '') + '-content';
+        const content = document.getElementById(contentId);
+        content.classList.toggle('hidden');
+        arrow.classList.toggle('arrow-up');
+      });
+    });
+
+    // Change profile picture on upload
+    document.getElementById('profile-pic-upload').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function() {
+          document.getElementById('profile-pic').src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Save profile changes (example)
+    document.getElementById('save-profile').addEventListener('click', function() {
+      const name = document.getElementById('profile-name').innerText;
+      const email = document.getElementById('profile-email').innerText;
+      const phone = document.getElementById('profile-phone').value;
+      const address = document.getElementById('profile-address').value;
+      const location = document.getElementById('profile-location').value;
+
+      // Perform save functionality, e.g., an API call to update the user data.
+      alert('Profile saved successfully!');
+    });
+
+    // Logout button functionality
+    document.getElementById('logout-btn').addEventListener('click', function() {
+      // Add logout functionality here
+      alert('Logged out!');
+    });
+
+    // Send message functionality for the chat box
+    document.getElementById('send-message').addEventListener('click', function() {
+      const message = document.getElementById('chat-input').value;
+      if (message) {
+        const messageElem = document.createElement('p');
+        messageElem.innerText = message;
+        document.getElementById('chat-messages').appendChild(messageElem);
+        document.getElementById('chat-input').value = '';
+      }
+    });
+    // Logout button functionality
+  document.getElementById('logout-btn').addEventListener('click', function() {
+    // Redirect to signup page after logout
+    window.location.href = 'signup.html'; // এখানে সাইনআপ পেজের পাথ দিন
+  });
+  </script>
+</body>
+</html>

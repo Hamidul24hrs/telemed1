@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn about Telemed, your trusted platform for finding and booking doctor appointments online.">
+  <title>About Us - Telemed</title>
+  <style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    a {
+      text-decoration: none;
+      color: #007BFF;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #007BFF;
+      padding: 15px;
+      color: #fff;
+    }
+    .navbar .logo h1 {
+      font-size: 24px;
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+    }
+    .navbar ul li a {
+      color: #fff;
+      font-weight: bold;
+    }
+
+    /* About Section */
+    .about-section {
+      padding: 50px 0;
+      background-color: #fff;
+    }
+    .about-section h2 {
+      text-align: center;
+      font-size: 32px;
+      color: #007BFF;
+      margin-bottom: 30px;
+    }
+    .about-section .about-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+    }
+    .about-section .about-content .text {
+      flex: 1;
+      max-width: 48%;
+    }
+    .about-section .about-content .text h3 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 15px;
+    }
+    .about-section .about-content .text p {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.6;
+    }
+    .about-section .about-content .image img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Contact Section */
+    .contact-info {
+      background-color: #f9f9f9;
+      padding: 40px 15px;
+      text-align: center;
+    }
+    .contact-info h3 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    .contact-info p {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .contact-info .contact-details {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+    .contact-info .contact-details .contact-item {
+      font-size: 16px;
+      color: #333;
+    }
+    .contact-info .contact-details .contact-item i {
+      margin-right: 10px;
+      color: #007BFF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">
+      <h1>Telemed</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="find-doctors.html">Find Doctors</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- About Us Section -->
+  <section class="about-section">
+    <div class="container">
+      <h2>About Telemed</h2>
+      <div class="about-content">
+        <div class="text">
+          <h3>Our Mission</h3>
+          <p>At Telemed, our mission is to provide easy access to healthcare by connecting patients with experienced doctors in real-time. Whether you need a consultation for a common illness or specialized treatment, our platform ensures that you can find the right doctor for your needs in a convenient and timely manner.</p>
+
+          <h3>Our Vision</h3>
+          <p>Our vision is to revolutionize healthcare by making medical consultations accessible, affordable, and efficient for people worldwide. We aim to make healthcare easy, fast, and reliable, ensuring that no matter where you are, you can always get the medical help you need.</p>
+
+          <h3>Our Values</h3>
+          <ul>
+            <li>Patient-Centric Care</li>
+            <li>Innovation and Technology</li>
+            <li>Trust and Transparency</li>
+            <li>Accessible Healthcare for All</li>
+          </ul>
+        </div>
+        <div class="image">
+          <img src="team.jpg" alt="Our Team">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Information Section -->
+  <section class="contact-info" id="contact">
+    <h3>Contact Us</h3>
+    <p>If you have any questions, feel free to reach out to us.</p>
+    <div class="contact-details">
+      <div class="contact-item">
+        <i class="fa fa-phone"></i>+1 800 123 4567
+      </div>
+      <div class="contact-item">
+        <i class="fa fa-envelope"></i>support@telemed.com
+      </div>
+      <div class="contact-item">
+        <i class="fa fa-map-marker"></i>123 Health St, Medical City, USA
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

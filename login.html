@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Telemed</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login to Telemed</h2>
+    <form id="login-form">
+      <label for="user-type">Login as:</label>
+      <select id="user-type" name="user-type" required>
+        <option value="user">User</option>
+        <option value="doctor">Doctor</option>
+      </select>
+
+      <label for="phone">Phone Number:</label>
+      <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p>Don't have an account? <a href="register.html">Register here</a></p>
+  </div>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const userType = document.getElementById('user-type').value;
+      const phone = document.getElementById('phone').value;
+      const password = document.getElementById('password').value;
+
+      // Backend API call for authentication
+      fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userType, phone, password }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          if (userType === 'doctor') {
+            window.location.href = '/doctor-dashboard.html';
+          } else {
+            window.location.href = '/user-dashboard.html';
+          }
+        } else {
+          alert(data.message || 'Login failed. Please try again.');
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>

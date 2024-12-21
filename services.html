@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telemed - Find Doctors</title>
+  <style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      background-color: #f0f4f7;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 36px;
+      color: #007BFF;
+      margin-bottom: 10px;
+    }
+    .btn {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    .doctor-list {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .doctor-list ul {
+      list-style: none;
+      padding: 0;
+    }
+    .doctor-list li {
+      padding: 15px;
+      background-color: #f9f9f9;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .error-message {
+      color: #d9534f;
+      font-size: 18px;
+    }
+    .file-upload {
+      margin-top: 30px;
+    }
+    .file-upload input[type="file"] {
+      font-size: 16px;
+    }
+    #output {
+      margin-top: 20px;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    #preview {
+      margin-top: 20px;
+      max-width: 100%;
+      height: auto;
+      display: none;
+      border-radius: 5px;
+      border: 2px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Find Doctors Near You</h1>
+    <p>Click the button below to find doctors near your location.</p>
+    <button class="btn" id="find-doctors">Find Doctors</button>
+
+    <!-- Prescription Upload Section -->
+    <div class="file-upload">
+      <h2>Upload Prescription Image</h2>
+      <input type="file" id="file-input" accept="image/*" onchange="previewImage()" />
+      <img id="preview" alt="Prescription Preview" />
+      <button class="btn" id="process-image">Process Prescription</button>
+    </div>
+
+    <div id="output"></div>
+
+    <!-- Doctor List -->
+    <div class="doctor-list" id="doctor-list">
+      <!-- Doctors will be displayed here -->
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.1"></script>
+  <script>
+    // Predefined list of doctors with their locations (latitude, longitude)
+    const doctors = [
+      { name: "Dr. Alice Johnson", specialty: "General Practitioner", lat: 40.7128, lng: -74.0060 }, // New York
+      { name: "Dr. Bob Smith", specialty: "Pediatrician", lat: 34.0522, lng: -118.2437 }, // Los Angeles
+      { name: "Dr. Carol Lee", specialty: "Cardiologist", lat: 41.8781, lng: -87.6298 }, // Chicago
+      { name: "Dr. David Kim", specialty: "Dermatologist", lat: 29.7604, lng: -95.3698 }, // Houston
+      { name: "Dr. Emily Davis", specialty: "Neurologist", lat: 40.7128, lng: -74.0060 } // New York
+    ];
+
+    // Function to calculate distance between two coordinates using Haversine formula
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Radius of the Earth in km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c; // Distance in km
+    }
+
+    // Function to find nearby doctors
+    function findNearbyDoctors(userLat, userLng) {
+      const maxDistance = 50; // Maximum distance in km to consider nearby
+      const nearbyDoctors = doctors.filter(doctor => {
+        const distance = calculateDistance(userLat, userLng, doctor.lat, doctor.lng);
+        return distance <= maxDistance;
+      });
+      return nearbyDoctors;
+    }
+
+    // Event listener for the "Find Doctors" button
+    document.getElementById("find-doctors").addEventListener("click", () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+
+          const nearbyDoctors = findNearbyDoctors(userLat, userLng);
+          const doctorList = document.getElementById("doctor-list");
+          doctorList.innerHTML = ""; // Clear previous results
+
+          if (nearbyDoctors.length > 0) {
+            const ul = document.createElement("ul");
+            nearbyDoctors.forEach(doctor => {
+              const li = document.createElement("li");
+              li.textContent = `${doctor.name} (${doctor.specialty}) - Approx. ${calculateDistance(userLat, userLng, doctor.lat, doctor.lng).toFixed(2)} km away`;
+              ul.appendChild(li);
+            });
+            doctorList.appendChild(ul);
+          } else {
+            doctorList.innerHTML = "<p>No doctors found near your location.</p>";
+          }
+        }, error => {
+          alert("Unable to retrieve your location. Please try again.");
+        });
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    });
+
+    // Preview image before processing
+    function previewImage() {
+      const fileInput = document.getElementById("file-input");
+      const preview = document.getElementById("preview");
+      
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onloadend = function () {
+        preview.src = reader.result;
+        preview.style.display = "block"; // Show the image preview
+      }
+
+      if (file) {
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = "";
+        preview.style.display = "none"; // Hide the image preview if no file
+      }
+    }
+
+    // Event listener for the "Process Prescription" button
+    document.getElementById("process-image").addEventListener("click", function () {
+      const fileInput = document.getElementById("file-input");
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert("Please select an image to process.");
+        return;
+      }
+
+      // Create a temporary image element
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      
+      // Wait for the image to load
+      img.onload = function() {
+        // Create a canvas to manipulate the image
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        // Pre-process the image for better OCR accuracy (increase contrast, etc.)
+        ctx.filter = 'contrast(150%)';
+        ctx.drawImage(img, 0, 0);
+
+        // Now, perform OCR using Tesseract.js
+        Tesseract.recognize(
+          canvas,
+          'eng',
+          {
+            logger: info => console.log(info),
+            psm: 6 // Page Segmentation Mode for better handwriting recognition
+          }
+        ).then(({ data: { text } }) => {
+          const outputDiv = document.getElementById("output");
+          outputDiv.innerHTML = "<h3>Extracted Text:</h3><pre>" + text + "</pre>";
+
+          // Process the extracted text to identify medicines (simplified example)
+          const medicines = extractMedicines(text);
+          if (medicines.length > 0) {
+            outputDiv.innerHTML += "<h3>Medicines Found:</h3><ul>" + medicines.map(medicine => `<li>${medicine}</li>`).join('') + "</ul>";
+          } else {
+            outputDiv.innerHTML += "<p>No medicines found in the prescription.</p>";
+          }
+        }).catch(err => {
+          alert("An error occurred while processing the image.");
+          console.error(err);
+        });
+      };
+    });
+
+    // Function to extract medicines from the text (simple regex example)
+    function extractMedicines(text) {
+      const medicineList = ["Paracetamol", "Ibuprofen", "Aspirin", "Amoxicillin", "Metformin"];
+      const medicinesFound = [];
+
+      medicineList.forEach(medicine => {
+        if (text.includes(medicine)) {
+          medicinesFound.push(medicine);
+        }
+      });
+
+      return medicinesFound;
+    }
+  </script>
+</body>
+</html>

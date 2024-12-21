@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    .btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Edit Your Profile</h1>
+    <form id="profile-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" placeholder="Enter your name" required><br><br>
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Enter your email" required><br><br>
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" placeholder="Enter your phone number" required><br><br>
+      <button type="submit" class="btn">Save Profile</button>
+    </form>
+  </div>
+
+  <script>
+    // Fetch logged-in user
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    
+    // If no user is logged in, redirect to login page
+    if (!loggedInUser) {
+      window.location.href = 'index.html'; // Redirect to login page
+    }
+
+    // Pre-fill the form with logged-in user's data if available
+    document.getElementById('name').value = loggedInUser.name || '';
+    document.getElementById('email').value = loggedInUser.email || '';
+    document.getElementById('phone').value = loggedInUser.phone || '';
+
+    // Handle form submission
+    document.getElementById('profile-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form from refreshing the page
+
+      // Update the logged-in user's profile information
+      loggedInUser.name = document.getElementById('name').value;
+      loggedInUser.email = document.getElementById('email').value;
+      loggedInUser.phone = document.getElementById('phone').value;
+
+      // Save updated information to localStorage
+      localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+
+      // Redirect to the dashboard (user-specific)
+      if (loggedInUser.type === 'user') {
+        window.location.href = 'user-dashboard.html'; // Redirect to user dashboard
+      } else if (loggedInUser.type === 'doctor') {
+        window.location.href = 'doctor-dashboard.html'; // Redirect to doctor dashboard
+      }
+    });
+  </script>
+</body>
+</html>

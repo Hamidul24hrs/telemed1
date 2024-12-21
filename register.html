@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Telemed</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="register-container">
+    <h2>Register on Telemed</h2>
+    <form id="register-form">
+      <label for="user-type">Register as:</label>
+      <select id="user-type" name="user-type" required>
+        <option value="user">User</option>
+        <option value="doctor">Doctor</option>
+      </select>
+
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+      <label for="phone">Phone Number:</label>
+      <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Create a password" required>
+
+      <!-- Additional fields for doctors -->
+      <div id="doctor-fields" style="display: none;">
+        <label for="specialty">Specialty:</label>
+        <input type="text" id="specialty" name="specialty" placeholder="Enter your specialty">
+
+        <label for="location">Clinic Location:</label>
+        <input type="text" id="location" name="location" placeholder="Enter your clinic location">
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="login.html">Login here</a></p>
+  </div>
+
+  <script>
+    document.getElementById('user-type').addEventListener('change', function() {
+      const userType = this.value;
+      document.getElementById('doctor-fields').style.display = userType === 'doctor' ? 'block' : 'none';
+    });
+
+    document.getElementById('register-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const userType = document.getElementById('user-type').value;
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const password = document.getElementById('password').value;
+      const specialty = document.getElementById('specialty').value;
+      const location = document.getElementById('location').value;
+
+      // Backend API call for registration
+      fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userType, name, phone, password, specialty, location }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Registration successful!');
+          window.location.href = '/login.html';
+        } else {
+          alert(data.message || 'Registration failed. Please try again.');
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>

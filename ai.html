@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    button {
+      padding: 15px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Voice Chatbot</h1>
+  <button id="start-recording">Start Recording</button>
+  <p id="output"></p>
+
+  <script>
+    const startRecording = document.getElementById("start-recording");
+    const output = document.getElementById("output");
+
+    // Initialize SpeechRecognition API (Google Web Speech API)
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US'; // Set language to English or 'bn-BD' for Bengali
+
+    startRecording.onclick = () => {
+      recognition.start();
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      output.textContent = `You said: ${transcript}`;
+
+      // Send message to backend (Flask)
+      fetch('/process-message', {
+        method: 'POST',
+        body: JSON.stringify({ message: transcript }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(data => {
+        output.textContent += "\nBot: " + data.reply;
+      });
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      output.textContent = "Sorry, I couldn't understand your speech.";
+    };
+  </script>
+</body>
+</html>

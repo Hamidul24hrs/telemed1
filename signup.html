@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User and Doctor Login System</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: bold;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    .nav {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .nav a {
+      margin: 0 15px;
+      color: #007BFF;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>User/Doctor Login</h1>
+    
+    <!-- Login Form -->
+    <div id="login-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter Username">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter Password">
+      </div>
+      <button class="btn" id="login-btn">Login</button>
+    </div>
+
+    <div class="nav">
+      <a href="#" id="signup-link">Sign Up</a>
+    </div>
+  </div>
+
+  <!-- SignUp Form for User and Doctor -->
+  <div class="container" id="signup-form" style="display:none;">
+    <h1>Sign Up</h1>
+    <div class="form-group">
+      <label for="new-username">Username</label>
+      <input type="text" id="new-username" placeholder="Enter Username">
+    </div>
+    <div class="form-group">
+      <label for="new-password">Password</label>
+      <input type="password" id="new-password" placeholder="Enter Password">
+    </div>
+    <div class="form-group">
+      <label for="user-type">User Type</label>
+      <select id="user-type">
+        <option value="user">User</option>
+        <option value="doctor">Doctor</option>
+      </select>
+    </div>
+    <button class="btn" id="signup-btn">Sign Up</button>
+    <div class="nav">
+      <a href="#" id="back-login-link">Back to Login</a>
+    </div>
+  </div>
+
+  <script>
+    // Simulating account data storage (use server/database in production)
+    const accounts = {
+      users: [
+        { username: 'user1', password: 'password123', type: 'user' },
+        { username: 'doctor1', password: 'password123', type: 'doctor' }
+      ]
+    };
+
+    // Show the sign-up form when clicking the sign-up link
+    document.getElementById("signup-link").addEventListener("click", function() {
+      document.getElementById("login-form").style.display = "none";
+      document.getElementById("signup-form").style.display = "block";
+    });
+
+    // Back to login form
+    document.getElementById("back-login-link").addEventListener("click", function() {
+      document.getElementById("login-form").style.display = "block";
+      document.getElementById("signup-form").style.display = "none";
+    });
+
+       // Handle user login
+document.getElementById("login-btn").addEventListener("click", function() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  // Check if the username and password match
+  const user = accounts.users.find(u => u.username === username && u.password === password);
+  if (user) {
+    // Simulate saving session
+    localStorage.setItem('loggedInUser', JSON.stringify(user));
+    
+    // Redirect based on user type
+    if (user.type === 'user') {
+      window.location.href = 'user-dashboard.html'; // Redirect to user dashboard
+    } else if (user.type === 'doctor') {
+      window.location.href = 'doctor-dashboard.html'; // Redirect to doctor dashboard
+    }
+  } else {
+    alert('Invalid credentials. Please try again.');
+  }
+});
+
+    // Handle user sign-up
+    document.getElementById("signup-btn").addEventListener("click", function() {
+      const username = document.getElementById("new-username").value;
+      const password = document.getElementById("new-password").value;
+      const userType = document.getElementById("user-type").value;
+
+      // Simulate storing the new account
+      accounts.users.push({ username, password, type: userType });
+      alert('Account created successfully! You can now log in.');
+
+      // Switch back to login form
+      document.getElementById("login-form").style.display = "block";
+      document.getElementById("signup-form").style.display = "none";
+    });
+  </script>
+</body>
+</html>
